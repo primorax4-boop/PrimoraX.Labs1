@@ -1,30 +1,75 @@
 <!DOCTYPE html>
+<!--
+  ============================================================
+  PRIMORAX LABS - ENGINEERING LAB & ARCHIVE
+  ============================================================
+  
+  HOW TO ADD YOUR LOGO:
+  ---------------------
+  1. Create a logo file (PNG, SVG, or JPG recommended)
+     - Recommended size: 200x200px or larger (square format)
+     - Name it: logo.png (or logo.svg, logo.jpg)
+  
+  2. Place the logo file in the same directory as this HTML file
+  
+  3. Search for "TO ADD YOUR LOGO" comments in this file and:
+     - Uncomment the <img> tags
+     - Comment out the placeholder divs/spans
+     - Update the src path if your logo has a different name
+  
+  4. Logo locations:
+     - Splash screen (line ~2030)
+     - Navigation bar (line ~2045)
+     - Footer (line ~3030)
+  
+  LOCATION DETECTION:
+  ------------------
+  The page automatically detects user location using browser geolocation API.
+  No API keys required - uses free OpenStreetMap service for reverse geocoding.
+  
+  FEATURES:
+  ---------
+  ✓ Professional splash screen with logo
+  ✓ Location detection and display
+  ✓ Live chatbot (client-side, no APIs)
+  ✓ Interactive virtual lab
+  ✓ Fully responsive design
+  ✓ Zero external dependencies
+  ✓ Business-ready professional design
+  
+  ============================================================
+-->
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PrimoraX.labs — Engineering Lab & Archive</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Geist:wght@200;300;400;500&display=swap" rel="stylesheet">
+<meta name="description" content="PrimoraX.labs - A student-led engineering lab and technical archive. Build. Document. Preserve.">
+<meta name="keywords" content="engineering lab, student projects, technical archive, electronics lab, virtual lab">
+<meta name="author" content="PrimoraX Labs">
+<title>PrimoraX.labs — Engineering Lab &amp; Archive</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='14' fill='%23020408'/><rect width='100' height='100' rx='14' fill='none' stroke='%2300d4ff' stroke-width='4'/><text x='50' y='68' font-family='monospace' font-size='42' font-weight='bold' fill='%2300d4ff' text-anchor='middle'>PX</text></svg>">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --black: #080808;
-    --white: #f4f4f2;
-    --gray-100: #e8e8e6;
-    --gray-300: #a8a8a6;
-    --gray-500: #5a5a58;
-    --gray-700: #2a2a28;
-    --gray-800: #181816;
-    --accent: #c8a96e;
-    --accent-dim: #8a7048;
-    --mono: 'DM Mono', monospace;
-    --serif: 'Cormorant Garamond', serif;
-    --sans: 'Geist', sans-serif;
+    --black: #020408;
+    --white: #e0faff;
+    --gray-100: #a8c5ff;
+    --gray-300: #6b96dd;
+    --gray-500: #3d5a8c;
+    --gray-700: #1a2e52;
+    --gray-800: #0f1f35;
+    --accent: #00d4ff;
+    --accent-dim: #0066cc;
+    --mono: 'Courier New', 'Consolas', 'Monaco', monospace;
+    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   }
 
-  html { scroll-behavior: smooth; }
+  html { 
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+  }
 
   body {
     background: var(--black);
@@ -34,14 +79,171 @@
     line-height: 1.6;
     overflow-x: hidden;
     cursor: default;
+    max-width: 100vw;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* SPLASH SCREEN / LOADING SCREEN */
+  .splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+
+  .splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .splash-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  .splash-logo {
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 255, 0.05);
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .splash-logo::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, var(--accent), transparent, var(--accent));
+    animation: logoShine 3s infinite;
+    opacity: 0.5;
+  }
+
+  .splash-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .splash-logo-placeholder {
+    font-family: var(--mono);
+    font-size: 32px;
+    color: var(--accent);
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+  }
+
+  @keyframes logoShine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  }
+
+  .splash-title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 300;
+    color: var(--white);
+    letter-spacing: -0.02em;
+    text-align: center;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeInUp 1s 0.3s forwards;
+  }
+
+  .splash-subtitle {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeInUp 1s 0.6s forwards;
+    margin-bottom: 40px;
+  }
+
+  .splash-location {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gray-500);
+    letter-spacing: 0.15em;
+    opacity: 0;
+    animation: fadeInUp 1s 0.9s forwards;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .splash-loader {
+    width: 200px;
+    height: 2px;
+    background: var(--gray-800);
+    border-radius: 2px;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 0.5s 1.2s forwards;
+  }
+
+  .splash-loader-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-dim), var(--accent), var(--accent-dim));
+    width: 0%;
+    animation: loadingBar 2s 1.2s ease forwards;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+  }
+
+  @keyframes loadingBar {
+    0% { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   ::selection { background: var(--accent); color: var(--black); }
 
   /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 1px; }
+  ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: var(--black); }
-  ::-webkit-scrollbar-thumb { background: var(--gray-500); }
+  ::-webkit-scrollbar-thumb { 
+    background: var(--gray-700); 
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gray-500); }
 
   /* NAV */
   nav {
@@ -53,6 +255,15 @@
     justify-content: space-between;
     align-items: center;
     mix-blend-mode: normal;
+    overflow-x: hidden;
+    background: rgba(2, 4, 8, 0.85);
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease;
+  }
+  
+  nav.scrolled {
+    background: rgba(2, 4, 8, 0.95);
+    box-shadow: 0 2px 20px rgba(0, 212, 255, 0.1);
   }
 
   nav::after {
@@ -60,19 +271,52 @@
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.15), transparent);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
   }
 
   .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .nav-logo-img {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 255, 0.05);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .nav-logo-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+  }
+
+  .nav-logo-text {
     font-family: var(--mono);
     font-size: 13px;
     letter-spacing: 0.12em;
     color: var(--white);
-    text-decoration: none;
-    opacity: 0.9;
+  }
+  
+  .nav-logo:hover {
+    opacity: 1;
+    transform: scale(1.05);
   }
 
-  .nav-logo span { color: var(--accent); }
+  .nav-logo-text span { color: var(--accent); }
 
   .nav-links {
     display: flex;
@@ -87,10 +331,35 @@
     color: var(--gray-300);
     text-decoration: none;
     text-transform: uppercase;
-    transition: color 0.3s;
+    transition: color 0.3s, transform 0.2s;
+    position: relative;
   }
 
-  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover { 
+    color: var(--white); 
+    transform: translateY(-2px);
+  }
+  
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  
+  .nav-links a:hover::after,
+  .nav-links a:focus::after {
+    width: 100%;
+  }
+  
+  .nav-links a:focus {
+    outline: 1px solid var(--accent);
+    outline-offset: 4px;
+  }
 
   /* HERO */
   .hero {
@@ -101,22 +370,23 @@
     padding: 0 60px;
     position: relative;
     overflow: hidden;
+    max-width: 100vw;
   }
 
   .hero-bg {
     position: absolute;
     inset: 0;
     background: 
-      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(200,169,110,0.04) 0%, transparent 60%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(255,255,255,0.02) 0%, transparent 50%);
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(0, 212, 255, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(0, 212, 255, 0.03) 0%, transparent 50%);
   }
 
   .hero-grid {
     position: absolute;
     inset: 0;
     background-image: 
-      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+      linear-gradient(rgba(0, 212, 255, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.015) 1px, transparent 1px);
     background-size: 80px 80px;
     mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
   }
@@ -171,6 +441,17 @@
     opacity: 0;
     animation: fadeIn 1s 1.4s forwards;
   }
+  
+  .live-indicator {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: pulseLive 2s infinite;
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+  }
 
   .hero-scroll {
     position: absolute;
@@ -186,6 +467,12 @@
     text-transform: uppercase;
     opacity: 0;
     animation: fadeIn 1s 1.6s forwards;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+  
+  .hero-scroll:hover {
+    color: var(--accent);
   }
 
   .scroll-line {
@@ -223,7 +510,12 @@
   }
 
   /* SECTIONS */
-  section { padding: 140px 60px; position: relative; }
+  section { 
+    padding: 140px 60px; 
+    position: relative; 
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
 
   .section-label {
     font-family: var(--mono);
@@ -248,7 +540,8 @@
   /* ABOUT */
   .about {
     background: var(--black);
-    border-top: 1px solid var(--gray-700);
+    border-top: 1px solid var(--accent);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1);
   }
 
   .about-grid {
@@ -282,19 +575,30 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1px;
-    background: var(--gray-700);
+    background: var(--accent-dim);
     margin-top: 80px;
-    border: 1px solid var(--gray-700);
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
   }
 
   .pillar {
     background: var(--black);
     padding: 40px 32px;
     position: relative;
-    transition: background 0.4s;
+    transition: background 0.4s, box-shadow 0.4s;
+    border-left: 1px solid var(--accent-dim);
+    border-right: 1px solid var(--accent-dim);
   }
 
-  .pillar:hover { background: var(--gray-800); }
+  .pillar:hover { 
+    background: var(--gray-800);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .pillar {
+    transition: background 0.4s, box-shadow 0.4s, transform 0.3s ease;
+  }
 
   .pillar-number {
     font-family: var(--mono);
@@ -320,14 +624,16 @@
   /* DIVIDER */
   .divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gray-700) 20%, var(--gray-700) 80%, transparent);
+    background: linear-gradient(90deg, transparent, var(--accent) 20%, var(--accent) 80%, transparent);
     margin: 0 60px;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
   }
 
   /* VIRTUAL LAB */
   .lab-section {
-    background: #06060a;
-    border-top: 1px solid var(--gray-700);
+    background: #020408;
+    border-top: 1px solid var(--accent);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1);
   }
 
   .lab-header {
@@ -353,17 +659,19 @@
 
   /* LAB ENVIRONMENT */
   .lab-environment {
-    background: #04040a;
-    border: 1px solid rgba(200,169,110,0.12);
+    background: #010305;
+    border: 1px solid var(--accent);
     border-radius: 2px;
     overflow: hidden;
     position: relative;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.3), inset 0 0 12px rgba(0, 212, 255, 0.05);
   }
 
   .lab-tabs {
     display: flex;
-    border-bottom: 1px solid var(--gray-700);
-    background: #06060c;
+    border-bottom: 1px solid var(--accent-dim);
+    background: #020408;
+    box-shadow: inset 0 1px 0 rgba(0, 212, 255, 0.1);
   }
 
   .lab-tab {
@@ -377,15 +685,24 @@
     background: transparent;
     text-transform: uppercase;
     transition: all 0.3s;
-    border-right: 1px solid var(--gray-700);
+    border-right: 1px solid var(--accent-dim);
     position: relative;
   }
+  
+  .lab-tab:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
 
-  .lab-tab:hover { color: var(--gray-300); }
+  .lab-tab:hover { 
+    color: var(--accent);
+    box-shadow: inset 0 -1px 0 rgba(0, 212, 255, 0.3);
+  }
 
   .lab-tab.active {
     color: var(--accent);
-    background: rgba(200,169,110,0.05);
+    background: rgba(0, 212, 255, 0.05);
+    box-shadow: inset 0 -1px 0 var(--accent), 0 0 12px rgba(0, 212, 255, 0.1);
   }
 
   .lab-tab.active::after {
@@ -395,6 +712,7 @@
     left: 0; right: 0;
     height: 1px;
     background: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
   }
 
   .lab-canvas-area {
@@ -404,6 +722,8 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    width: 100%;
+    overflow-x: auto;
   }
 
   .lab-panel {
@@ -416,10 +736,11 @@
   /* OSCILLOSCOPE */
   .osc-container {
     position: relative;
-    background: #030510;
-    border: 1px solid rgba(0,255,128,0.15);
+    background: #010305;
+    border: 1px solid var(--accent);
     border-radius: 2px;
     padding: 40px;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.3), inset 0 0 12px rgba(0, 212, 255, 0.05);
   }
 
   .osc-header {
@@ -432,8 +753,9 @@
   .osc-label {
     font-family: var(--mono);
     font-size: 10px;
-    color: rgba(0,255,128,0.6);
+    color: var(--accent);
     letter-spacing: 0.2em;
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
   }
 
   .osc-controls {
@@ -444,9 +766,9 @@
   .osc-btn {
     font-family: var(--mono);
     font-size: 10px;
-    color: rgba(0,255,128,0.5);
-    background: rgba(0,255,128,0.05);
-    border: 1px solid rgba(0,255,128,0.15);
+    color: var(--gray-500);
+    background: transparent;
+    border: 1px solid var(--accent-dim);
     padding: 6px 16px;
     cursor: pointer;
     letter-spacing: 0.1em;
@@ -454,15 +776,24 @@
   }
 
   .osc-btn:hover, .osc-btn.active {
-    color: rgba(0,255,128,1);
-    background: rgba(0,255,128,0.1);
-    border-color: rgba(0,255,128,0.4);
+    color: var(--accent);
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+    transform: translateY(-1px);
+  }
+  
+  .osc-btn {
+    transition: all 0.2s ease;
   }
 
   canvas#oscilloscope {
     width: 100%;
     height: 220px;
     display: block;
+    max-width: 100%;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
   .osc-readout {
@@ -478,14 +809,15 @@
   .readout-value {
     font-family: var(--mono);
     font-size: 20px;
-    color: rgba(0,255,128,0.9);
+    color: var(--accent);
     font-weight: 300;
+    text-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
   }
 
   .readout-key {
     font-family: var(--mono);
     font-size: 10px;
-    color: rgba(0,255,128,0.35);
+    color: var(--accent-dim);
     letter-spacing: 0.15em;
     margin-top: 4px;
   }
@@ -512,23 +844,25 @@
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    border: 1px solid rgba(200,169,110,0.2);
+    border: 1px solid var(--accent);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
   }
 
   .motor-inner {
     width: 140px;
     height: 140px;
     border-radius: 50%;
-    background: radial-gradient(circle, #1a1a1a, #0a0a0a);
-    border: 1px solid rgba(200,169,110,0.15);
+    background: radial-gradient(circle, #0f1f35, #020408);
+    border: 1px solid var(--accent-dim);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.2);
   }
 
   .motor-shaft {
@@ -536,18 +870,19 @@
     height: 8px;
     border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 16px rgba(200,169,110,0.6);
+    box-shadow: 0 0 16px var(--accent), 0 0 24px rgba(0, 212, 255, 0.6);
   }
 
   .motor-blade {
     position: absolute;
     width: 60px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(200,169,110,0.7));
+    background: linear-gradient(90deg, transparent, var(--accent));
     transform-origin: left center;
     left: 50%;
     top: 50%;
     transform: translateY(-50%);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
   }
 
   .motor-rpm {
@@ -590,6 +925,7 @@
     background: var(--gray-700);
     outline: none;
     cursor: pointer;
+    min-width: 0;
   }
 
   input[type="range"]::-webkit-slider-thumb {
@@ -599,28 +935,41 @@
     border-radius: 50%;
     background: var(--accent);
     cursor: pointer;
-    box-shadow: 0 0 12px rgba(200,169,110,0.4);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
     transition: box-shadow 0.2s;
+    border: 1px solid var(--accent);
   }
 
   input[type="range"]::-webkit-slider-thumb:hover {
-    box-shadow: 0 0 20px rgba(200,169,110,0.7);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+  }
+  
+  input[type="range"]:focus {
+    outline: none;
+  }
+  
+  input[type="range"]:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
   }
 
   /* RC CIRCUIT */
   .rc-container { }
 
   .rc-graph {
-    background: #030510;
-    border: 1px solid rgba(100,160,255,0.12);
+    background: #010305;
+    border: 1px solid var(--accent);
     padding: 32px 40px;
     margin-bottom: 32px;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
   }
 
   canvas#rcCanvas {
     width: 100%;
     height: 200px;
     display: block;
+    max-width: 100%;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
   }
 
   .rc-controls {
@@ -653,7 +1002,7 @@
   .logic-bit {
     width: 48px;
     height: 48px;
-    border: 1px solid var(--gray-700);
+    border: 1px solid var(--accent-dim);
     border-radius: 2px;
     display: flex;
     align-items: center;
@@ -665,12 +1014,17 @@
     transition: all 0.2s;
     user-select: none;
   }
+  
+  .logic-bit:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
 
   .logic-bit.on {
-    background: rgba(200,169,110,0.1);
+    background: rgba(0, 212, 255, 0.1);
     border-color: var(--accent);
     color: var(--accent);
-    box-shadow: 0 0 20px rgba(200,169,110,0.2);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
   }
 
   .logic-gate-body {
@@ -687,7 +1041,7 @@
     font-family: var(--mono);
     font-size: 10px;
     color: var(--gray-500);
-    border: 1px solid var(--gray-700);
+    border: 1px solid var(--accent-dim);
     background: transparent;
     padding: 6px 14px;
     cursor: pointer;
@@ -695,42 +1049,56 @@
     transition: all 0.2s;
   }
 
-  .gate-btn:hover { color: var(--gray-300); border-color: var(--gray-500); }
-  .gate-btn.active { color: var(--accent); border-color: var(--accent); background: rgba(200,169,110,0.06); }
+  .gate-btn:hover { 
+    color: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+    transform: translateY(-1px);
+  }
+  .gate-btn.active { 
+    color: var(--accent);
+    border-color: var(--accent);
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+  }
+  
+  .gate-btn {
+    transition: all 0.2s ease;
+  }
 
   .gate-result {
     font-family: var(--mono);
     font-size: 48px;
-    color: var(--gray-700);
+    color: var(--accent-dim);
     transition: all 0.3s;
     text-align: center;
   }
 
   .gate-result.on {
     color: var(--accent);
-    text-shadow: 0 0 30px rgba(200,169,110,0.5);
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.7);
   }
 
   .logic-output-led {
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background: radial-gradient(circle, #1a1a0a, #0a0a04);
-    border: 1px solid var(--gray-700);
+    background: radial-gradient(circle, #0f1f35, #020408);
+    border: 1px solid var(--accent-dim);
     transition: all 0.3s;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: var(--mono);
     font-size: 10px;
-    color: var(--gray-700);
+    color: var(--accent-dim);
   }
 
   .logic-output-led.on {
-    background: radial-gradient(circle, rgba(200,169,110,0.8), rgba(200,100,0,0.3));
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.8), rgba(0, 100, 200, 0.3));
     border-color: var(--accent);
-    box-shadow: 0 0 40px rgba(200,169,110,0.4), 0 0 80px rgba(200,169,110,0.1);
-    color: rgba(255,200,100,0.9);
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.6), 0 0 80px rgba(0, 212, 255, 0.2);
+    color: var(--accent);
   }
 
   /* TRANSISTOR */
@@ -800,9 +1168,10 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1px;
-    background: var(--gray-700);
-    border: 1px solid var(--gray-700);
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
     margin-bottom: 40px;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
   }
 
   .timer-state {
@@ -810,12 +1179,19 @@
     padding: 28px 20px;
     text-align: center;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
     position: relative;
+    border: 1px solid var(--accent-dim);
   }
 
-  .timer-state:hover { background: var(--gray-800); }
-  .timer-state.active { background: rgba(200,169,110,0.06); }
+  .timer-state:hover { 
+    background: var(--gray-800);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1);
+  }
+  .timer-state.active { 
+    background: rgba(0, 212, 255, 0.08);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.15);
+  }
 
   .timer-state.active::after {
     content: '';
@@ -823,6 +1199,7 @@
     top: 0; left: 0; right: 0;
     height: 1px;
     background: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
   }
 
   .state-name {
@@ -849,13 +1226,14 @@
   }
 
   .timer-visual {
-    background: #030510;
-    border: 1px solid rgba(200,169,110,0.1);
+    background: #010305;
+    border: 1px solid var(--accent);
     padding: 40px;
     min-height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
   }
 
   .pin-diagram {
@@ -889,26 +1267,28 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--gray-700);
+    background: var(--accent-dim);
     transition: all 0.3s;
     flex-shrink: 0;
+    box-shadow: 0 0 6px rgba(0, 212, 255, 0.2);
   }
 
   .pin-dot.active {
     background: var(--accent);
-    box-shadow: 0 0 12px rgba(200,169,110,0.5);
+    box-shadow: 0 0 12px var(--accent), 0 0 20px rgba(0, 212, 255, 0.6);
   }
 
   .pin-name { color: var(--gray-500); }
   .pin-num { color: var(--gray-300); }
 
   .ic-body {
-    background: #0e0e14;
-    border: 1px solid rgba(200,169,110,0.2);
+    background: #0f1f35;
+    border: 1px solid var(--accent);
     width: 100px;
     padding: 20px 12px;
     text-align: center;
     margin: 0 16px;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
   }
 
   .ic-label {
@@ -917,12 +1297,13 @@
     color: var(--accent);
     letter-spacing: 0.1em;
     font-weight: 500;
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.5);
   }
 
   .ic-sublabel {
     font-family: var(--mono);
     font-size: 9px;
-    color: var(--gray-500);
+    color: var(--accent-dim);
     letter-spacing: 0.08em;
     margin-top: 6px;
   }
@@ -930,7 +1311,8 @@
   /* PROJECTS */
   .projects-section {
     background: var(--black);
-    border-top: 1px solid var(--gray-700);
+    border-top: 1px solid var(--accent);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1);
   }
 
   .projects-header {
@@ -959,9 +1341,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 1px;
-    background: var(--gray-700);
-    border: 1px solid var(--gray-700);
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
     margin-bottom: 1px;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
   }
 
   .project-card {
@@ -969,8 +1352,9 @@
     padding: 56px 48px;
     position: relative;
     cursor: pointer;
-    transition: background 0.4s;
+    transition: background 0.4s, box-shadow 0.4s;
     overflow: hidden;
+    border: 1px solid var(--accent-dim);
   }
 
   .project-card::before {
@@ -981,10 +1365,22 @@
     height: 0;
     background: var(--accent);
     transition: height 0.5s ease;
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
   }
 
-  .project-card:hover { background: var(--gray-800); }
-  .project-card:hover::before { height: 100%; }
+  .project-card:hover { 
+    background: var(--gray-800);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.15), 0 0 12px rgba(0, 212, 255, 0.2);
+    transform: translateY(-4px);
+  }
+  .project-card:hover::before { 
+    height: 100%;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+  }
+  
+  .project-card {
+    transition: background 0.4s, box-shadow 0.4s, transform 0.3s ease;
+  }
 
   .project-index {
     font-family: var(--mono);
@@ -1027,16 +1423,29 @@
   .tag {
     font-family: var(--mono);
     font-size: 10px;
-    color: var(--gray-500);
-    border: 1px solid var(--gray-700);
+    color: var(--accent);
+    border: 1px solid var(--accent);
     padding: 4px 12px;
     letter-spacing: 0.08em;
+    box-shadow: 0 0 6px rgba(0, 212, 255, 0.3);
+    transition: all 0.2s;
+  }
+  
+  .tag:hover {
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.5);
+    transform: scale(1.05);
+  }
+  
+  .tag {
+    transition: all 0.2s ease;
   }
 
   /* TEAM */
   .team-section {
-    background: #05050a;
-    border-top: 1px solid var(--gray-700);
+    background: #020408;
+    border-top: 1px solid var(--accent);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1);
   }
 
   .team-header {
@@ -1063,18 +1472,28 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
-    background: var(--gray-700);
-    border: 1px solid var(--gray-700);
+    background: transparent;
+    border: 1px solid var(--accent);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);
   }
 
   .team-card {
-    background: #05050a;
+    background: #020408;
     padding: 48px 40px;
     position: relative;
-    transition: background 0.3s;
+    transition: background 0.3s, box-shadow 0.3s;
+    border: 1px solid var(--accent-dim);
   }
 
-  .team-card:hover { background: var(--gray-800); }
+  .team-card:hover { 
+    background: var(--gray-800);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.15), 0 0 12px rgba(0, 212, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .team-card {
+    transition: background 0.3s, box-shadow 0.3s, transform 0.3s ease;
+  }
 
   .team-card.founder {
     grid-column: span 3;
@@ -1082,12 +1501,14 @@
     grid-template-columns: 1fr 2fr;
     gap: 80px;
     padding: 72px 48px;
-    border-bottom: 1px solid var(--gray-700);
-    background: #060610;
+    border-bottom: 1px solid var(--accent);
+    background: #0f1f35;
+    border: 1px solid var(--accent);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1);
   }
 
   .team-name {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 400;
     margin-bottom: 6px;
     letter-spacing: -0.01em;
@@ -1106,35 +1527,17 @@
     color: var(--accent);
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.15);
   }
 
-  .team-responsibilities {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
 
-  .team-responsibilities li {
-    font-size: 13px;
-    color: var(--gray-500);
-    padding-left: 16px;
-    position: relative;
-    line-height: 1.6;
-  }
 
-  .team-responsibilities li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--gray-700);
-    font-size: 11px;
-  }
+
+
 
   .founder-left { }
-
-  .founder-right {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1152,23 +1555,50 @@
   /* FOOTER */
   footer {
     padding: 80px 60px 60px;
-    border-top: 1px solid var(--gray-700);
+    border-top: 1px solid var(--accent);
     background: var(--black);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 60px;
     align-items: end;
+    box-shadow: inset 0 12px 0 rgba(0, 212, 255, 0.05);
   }
 
   .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .footer-logo {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--accent);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 212, 255, 0.05);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .footer-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+  }
+
+  .footer-brand-text {
     font-family: var(--mono);
     font-size: 20px;
     letter-spacing: 0.08em;
     color: var(--white);
-    margin-bottom: 12px;
   }
 
-  .footer-brand span { color: var(--accent); }
+  .footer-brand-text span { color: var(--accent); }
 
   .footer-tagline {
     font-size: 13px;
@@ -1205,10 +1635,11 @@
 
   .footer-bottom {
     padding: 24px 60px;
-    border-top: 1px solid var(--gray-700);
+    border-top: 1px solid var(--accent);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    box-shadow: inset 0 12px 0 rgba(0, 212, 255, 0.03);
   }
 
   .footer-bottom p {
@@ -1248,18 +1679,31 @@
 
   /* STAT STRIP */
   .stat-strip {
-    border-top: 1px solid var(--gray-700);
-    border-bottom: 1px solid var(--gray-700);
+    border-top: 1px solid var(--accent);
+    border-bottom: 1px solid var(--accent);
     padding: 40px 60px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1px;
-    background: var(--gray-700);
+    background: var(--accent-dim);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.2), inset 0 0 12px rgba(0, 212, 255, 0.05);
   }
 
   .stat {
     background: var(--black);
     padding: 32px 40px;
+    border: 1px solid var(--accent-dim);
+    transition: all 0.3s;
+  }
+  
+  .stat:hover {
+    background: var(--gray-800);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1), 0 0 12px rgba(0, 212, 255, 0.2);
+    transform: translateY(-2px);
+  }
+  
+  .stat {
+    transition: all 0.3s ease;
   }
 
   .stat-number {
@@ -1272,7 +1716,7 @@
     margin-bottom: 8px;
   }
 
-  .stat-number sup { font-size: 24px; color: var(--accent); }
+  .stat-number sup { font-size: 24px; color: var(--accent); text-shadow: 0 0 8px rgba(0, 212, 255, 0.5); }
 
   .stat-label {
     font-family: var(--mono);
@@ -1285,7 +1729,8 @@
   /* MANIFESTO */
   .manifesto {
     padding: 160px 60px;
-    border-top: 1px solid var(--gray-700);
+    border-top: 1px solid var(--accent);
+    box-shadow: inset 0 0 12px rgba(0, 212, 255, 0.1);
   }
 
   .manifesto-text {
@@ -1303,50 +1748,585 @@
     font-weight: 300;
   }
 
+  /* CHATBOT */
+  .chatbot-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    font-family: var(--mono);
+  }
+
+  .chatbot-toggle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--accent);
+    color: var(--black);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(0, 212, 255, 0.6);
+  }
+
+  .chatbot-toggle.active {
+    background: var(--gray-800);
+    color: var(--accent);
+  }
+
+  .chatbot-toggle::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.3;
+    animation: pulseChatbot 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.2); opacity: 0; }
+  }
+  
+  @keyframes pulseLive {
+    0%, 100% { 
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 0.5;
+      transform: scale(1.2);
+    }
+  }
+  
+  @keyframes pulseChatbot {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.2); opacity: 0; }
+  }
+
+  .chatbot-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 380px;
+    height: 500px;
+    background: var(--black);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0, 212, 255, 0.3);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .chatbot-window.active {
+    display: flex;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .chatbot-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--accent-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 212, 255, 0.05);
+  }
+
+  .chatbot-header h3 {
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .chatbot-close {
+    background: transparent;
+    border: 1px solid var(--accent-dim);
+    color: var(--gray-500);
+    width: 24px;
+    height: 24px;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .chatbot-close:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0, 212, 255, 0.1);
+  }
+
+  .chatbot-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .chatbot-messages::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .chatbot-messages::-webkit-scrollbar-thumb {
+    background: var(--gray-700);
+    border-radius: 2px;
+  }
+
+  .message {
+    display: flex;
+    gap: 12px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .message.user {
+    flex-direction: row-reverse;
+  }
+
+  .message-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .message.bot .message-avatar {
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .message.user .message-avatar {
+    background: var(--gray-800);
+    color: var(--white);
+    border: 1px solid var(--gray-700);
+  }
+
+  .message-content {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .message.bot .message-content {
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid var(--accent-dim);
+    color: var(--gray-300);
+  }
+
+  .message.user .message-content {
+    background: rgba(0, 212, 255, 0.15);
+    border: 1px solid var(--accent);
+    color: var(--white);
+  }
+
+  .chatbot-input-container {
+    padding: 16px 20px;
+    border-top: 1px solid var(--accent-dim);
+    display: flex;
+    gap: 12px;
+    background: rgba(0, 212, 255, 0.03);
+  }
+
+  .chatbot-input {
+    flex: 1;
+    background: var(--gray-800);
+    border: 1px solid var(--accent-dim);
+    color: var(--white);
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    border-radius: 4px;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .chatbot-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+  }
+
+  .chatbot-send {
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    color: var(--black);
+    padding: 10px 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .chatbot-send:hover {
+    background: var(--accent-dim);
+    border-color: var(--accent-dim);
+    color: var(--white);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+  }
+
+  .chatbot-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: typing 1.4s infinite;
+  }
+
+  .typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes typing {
+    0%, 60%, 100% {
+      transform: translateY(0);
+      opacity: 0.7;
+    }
+    30% {
+      transform: translateY(-8px);
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .chatbot-window {
+      width: calc(100vw - 32px);
+      height: calc(100vh - 120px);
+      right: 16px;
+      bottom: 80px;
+    }
+
+    .chatbot-toggle {
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      bottom: 16px;
+      right: 16px;
+    }
+
+    .splash-logo {
+      width: 100px;
+      height: 100px;
+    }
+
+    .splash-title {
+      font-size: clamp(28px, 8vw, 48px);
+    }
+
+    .splash-subtitle {
+      font-size: 10px;
+    }
+
+    .splash-location {
+      font-size: 10px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    section { padding: 100px 40px; }
+    .hero { padding: 0 40px; }
+    nav { padding: 20px 40px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .lab-header { grid-template-columns: 1fr; gap: 24px; }
+    .transistor-container { grid-template-columns: 1fr; gap: 40px; }
+    .pwm-container { grid-template-columns: 1fr; gap: 40px; }
+    .projects-grid { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .stat-strip { padding: 32px 24px; }
+  }
+
   @media (max-width: 768px) {
-    nav { padding: 24px 24px; }
-    .nav-links { display: none; }
-    section { padding: 80px 24px; }
-    .hero { padding: 0 24px; }
-    .about-grid { grid-template-columns: 1fr; gap: 48px; }
-    .about-pillars { grid-template-columns: 1fr; }
-    .lab-header { grid-template-columns: 1fr; gap: 32px; }
-    .pwm-container { grid-template-columns: 1fr; }
-    .transistor-container { grid-template-columns: 1fr; }
-    .projects-grid { grid-template-columns: 1fr; }
-    .team-grid { grid-template-columns: 1fr; }
-    .team-card.founder { grid-column: span 1; grid-template-columns: 1fr; gap: 40px; }
-    footer { grid-template-columns: 1fr; }
-    .stat-strip { grid-template-columns: 1fr 1fr; padding: 24px; }
-    .timer-states { grid-template-columns: 1fr 1fr; }
+    html { font-size: 14px; }
+    nav { padding: 16px 16px; }
+    .mobile-menu-toggle { display: block !important; }
+    .nav-links { 
+      display: none; 
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: var(--black);
+      flex-direction: column;
+      padding: 20px;
+      gap: 20px;
+      border-top: 1px solid var(--accent);
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+    }
+    
+    .nav-links.mobile-open { display: flex; }
+    
+    .mobile-menu-toggle {
+      display: block;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      transition: all 0.3s;
+    }
+    
+    .mobile-menu-toggle:hover {
+      background: rgba(0, 212, 255, 0.1);
+      box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+    }
+    .nav-logo { font-size: 11px; }
+    .nav-logo-img { width: 32px; height: 32px; }
+    .nav-logo-text { font-size: 11px; }
+    section { padding: 60px 16px; }
+    .hero { padding: 0 16px; }
+    .hero-title { font-size: clamp(20px, 6vw, 48px); margin-bottom: 20px; }
+    .hero-sub { font-size: 12px; max-width: 100%; margin-top: 20px; }
+    .hero-scroll { display: none; }
+    .hero-meta { 
+      display: none; 
+    }
+    
+    .hero-meta #current-time {
+      display: none;
+    }
+    .hero-eyebrow { font-size: 10px; margin-bottom: 20px; }
+    .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    .about-headline { font-size: clamp(22px, 5vw, 36px); }
+    .about-body p { font-size: 13px; }
+    .about-pillars { grid-template-columns: 1fr; gap: 0; }
+    .pillar { padding: 24px 16px; border-left: none; border-right: none; }
+    .section-label { font-size: 9px; margin-bottom: 32px; }
+    .lab-header { grid-template-columns: 1fr; gap: 16px; }
+    .lab-title { font-size: clamp(22px, 5vw, 48px); }
+    .lab-desc { font-size: 13px; }
+    .lab-tabs { flex-wrap: wrap; }
+    .lab-tab { padding: 12px 14px; font-size: 9px; flex: 1; min-width: 70px; border-right: none; }
+    .lab-canvas-area { padding: 16px; min-height: 300px; }
+    .osc-container { padding: 16px; }
+    canvas#oscilloscope { height: 150px; }
+    canvas#rcCanvas { height: 150px; }
+    .osc-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+    .osc-controls { flex-wrap: wrap; gap: 6px; }
+    .osc-btn { padding: 4px 10px; font-size: 8px; }
+    .readout-item { padding: 8px 0; }
+    .readout-value { font-size: 14px; }
+    .readout-key { font-size: 8px; }
+    .pwm-container { grid-template-columns: 1fr; gap: 24px; }
+    .pwm-motor-vis { max-width: 100%; }
+    .motor-outer { width: 150px; height: 150px; }
+    .motor-inner { width: 100px; height: 100px; }
+    .control-label { font-size: 9px; }
+    .transistor-container { grid-template-columns: 1fr; gap: 20px; }
+    .signal-flow { gap: 12px; }
+    .signal-row { gap: 8px; }
+    .signal-name { font-size: 8px; width: 50px; }
     .rc-controls { grid-template-columns: 1fr; }
-    .hero-meta { display: none; }
-    .manifesto { padding: 80px 24px; }
-    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-    .divider { margin: 0 24px; }
-    .projects-header { flex-direction: column; align-items: start; gap: 16px; }
-    .projects-note { text-align: left; }
+    .logic-container { max-width: 100%; }
+    .logic-gate-section { flex-direction: column; gap: 20px; align-items: center; }
+    .gate-selector { flex-wrap: wrap; justify-content: center; }
+    .gate-btn { padding: 6px 12px; font-size: 9px; }
+    .projects-title { font-size: clamp(20px, 5vw, 48px); }
+    .projects-grid { grid-template-columns: 1fr; gap: 0; }
+    .project-card { padding: 32px 20px; }
+    .project-name { font-size: 18px; }
+    .project-branch { font-size: 9px; }
+    .project-desc { font-size: 13px; }
+    .project-tags { gap: 6px; }
+    .tag { padding: 3px 8px; font-size: 8px; }
+    .team-title { font-size: clamp(20px, 5vw, 48px); }
+    .team-grid { grid-template-columns: 1fr; gap: 0; }
+    .team-card { padding: 24px 16px; }
+    .team-card.founder { grid-column: span 1; grid-template-columns: 1fr; gap: 24px; padding: 32px 16px; }
+    .team-name { font-size: 18px; }
+    .founder .team-name { font-size: 22px; }
+    .team-role { font-size: 9px; letter-spacing: 0.15em; }
+    .founder-statement { font-size: 14px; }
+    .stat-strip { grid-template-columns: 1fr 1fr; gap: 0; padding: 20px 16px; }
+    .stat { padding: 16px 12px; }
+    .stat-number { font-size: 36px; margin-bottom: 4px; }
+    .stat-number sup { font-size: 14px; }
+    .stat-label { font-size: 8px; }
+    .manifesto { padding: 60px 16px; }
+    .manifesto-text { font-size: clamp(16px, 4vw, 28px); }
+    .timer-states { grid-template-columns: 1fr 1fr; gap: 0; }
+    .timer-state { padding: 16px 12px; }
+    .state-name { font-size: 9px; }
+    .state-pin { font-size: 11px; }
+    .state-desc { font-size: 11px; line-height: 1.4; }
+    .pin-diagram { gap: 8px; }
+    .pin-item { gap: 6px; font-size: 9px; }
+    .ic-body { width: 70px; padding: 12px 8px; margin: 0 6px; }
+    .ic-label { font-size: 10px; }
+    footer { grid-template-columns: 1fr; gap: 32px; padding: 40px 16px; }
+    .footer-brand { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .footer-logo { width: 40px; height: 40px; }
+    .footer-brand-text { font-size: 16px; }
+    .footer-tagline { font-size: 12px; }
+    .footer-col-label { font-size: 9px; }
+    .footer-links a { font-size: 12px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; padding: 16px; }
+    .footer-bottom p { font-size: 9px; }
+    .divider { margin: 0 16px; }
+  }
+
+  @media (max-width: 480px) {
+    html { font-size: 13px; }
+    nav { padding: 12px 12px; }
+    .nav-logo { font-size: 9px; }
+    .nav-logo-img { width: 28px; height: 28px; }
+    .nav-logo-text { font-size: 9px; }
+    .mobile-menu-toggle { display: block !important; }
+    section { padding: 40px 12px; }
+    .hero { padding: 0 12px; }
+    .hero-title { font-size: clamp(18px, 5vw, 32px); margin-bottom: 12px; }
+    .hero-eyebrow { font-size: 8px; margin-bottom: 12px; }
+    .hero-sub { font-size: 11px; line-height: 1.6; margin-top: 12px; }
+    .about-pillars { gap: 0; }
+    .pillar { padding: 16px 12px; }
+    .pillar-number { font-size: 8px; margin-bottom: 8px; }
+    .pillar-title { font-size: 13px; margin-bottom: 8px; }
+    .pillar-desc { font-size: 11px; }
+    .lab-tab { padding: 10px 10px; font-size: 8px; min-width: 60px; }
+    .osc-container { padding: 12px; }
+    canvas#oscilloscope { height: 120px; }
+    canvas#rcCanvas { height: 120px; }
+    .osc-readout { gap: 16px; flex-wrap: wrap; }
+    .readout-value { font-size: 12px; }
+    .motor-outer { width: 120px; height: 120px; }
+    .motor-inner { width: 80px; height: 80px; }
+    .motor-rpm { font-size: 9px; }
+    .logic-bit { width: 40px; height: 40px; font-size: 14px; }
+    .gate-result { font-size: 32px; }
+    .project-card { padding: 20px 12px; }
+    .project-name { font-size: 15px; }
+    .stat-number { font-size: 24px; }
+    .stat-number sup { font-size: 11px; }
+    .manifesto-text { font-size: clamp(14px, 4vw, 22px); }
+  }
+
+  @media (max-width: 320px) {
+    html { font-size: 12px; }
+    nav { padding: 8px 8px; }
+    .nav-logo { font-size: 8px; }
+    .nav-logo-img { width: 24px; height: 24px; }
+    .nav-logo-text { font-size: 8px; }
+    section { padding: 32px 8px; }
+    .hero { padding: 0 8px; }
+    .hero-title { font-size: clamp(16px, 4vw, 24px); }
+    .lab-tab { padding: 8px 8px; min-width: 55px; font-size: 7px; }
+    .motor-outer { width: 100px; height: 100px; }
+    .motor-inner { width: 70px; height: 70px; }
+    .splash-logo { width: 80px; height: 80px; }
+    .splash-title { font-size: clamp(24px, 8vw, 36px); }
   }
 </style>
 </head>
 <body>
 
+<!-- SPLASH SCREEN -->
+<div class="splash-screen" id="splashScreen">
+  <div class="splash-logo-container">
+    <div class="splash-logo">
+      <!-- 
+        TO ADD YOUR LOGO:
+        1. Place your logo file (logo.png or logo.svg) in the same folder as this HTML file
+        2. Uncomment the img tag below and comment out the placeholder div
+        3. Update the src path if your logo has a different name
+      -->
+      <!-- <img src="logo.png" alt="PrimoraX Labs Logo" /> -->
+      <div class="splash-logo-placeholder">PX</div>
+    </div>
+    <h1 class="splash-title">PrimoraX Labs</h1>
+    <p class="splash-subtitle">Engineering Lab & Archive</p>
+  </div>
+  <div class="splash-location" id="splashLocation">
+    Detecting location...
+  </div>
+  <div class="splash-loader">
+    <div class="splash-loader-bar"></div>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">PrimoraX<span>.</span>labs</a>
-  <ul class="nav-links">
-    <li><a href="#about">Philosophy</a></li>
-    <li><a href="#lab">Virtual Lab</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#team">Team</a></li>
+  <a href="#hero" class="nav-logo">
+    <div class="nav-logo-img">
+      <!-- 
+        TO ADD YOUR LOGO:
+        1. Place your logo file (logo.png or logo.svg) in the same folder as this HTML file
+        2. Uncomment the img tag below and comment out the placeholder span
+        3. Update the src path if your logo has a different name
+      -->
+      <!-- <img src="logo.png" alt="PrimoraX Labs" /> -->
+      <span style="font-family: var(--mono); font-size: 18px; color: var(--accent); font-weight: bold;">PX</span>
+    </div>
+    <span class="nav-logo-text">PrimoraX<span>.</span>labs</span>
+  </a>
+  <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" style="display: none;">MENU</button>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeMobileMenu()">Philosophy</a></li>
+    <li><a href="#lab" onclick="closeMobileMenu()">Virtual Lab</a></li>
+    <li><a href="#projects" onclick="closeMobileMenu()">Projects</a></li>
+    <li><a href="#team" onclick="closeMobileMenu()">Team</a></li>
   </ul>
 </nav>
 
 <!-- HERO -->
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
-  <p class="hero-eyebrow">PrimoraX.labs — Engineering Lab & Archive</p>
+  <p class="hero-eyebrow" style="font-size: 24px; letter-spacing: 0.2em;">PrimoraX.labs — Engineering Lab &amp; Archive</p>
   <h1 class="hero-title">
     Build.<br>
     <em>Document.</em><br>
@@ -1355,32 +2335,34 @@
   <p class="hero-sub">
     A student-led engineering lab where real projects are built, rigorously documented, and preserved beyond academic submission.
   </p>
-  <div class="hero-scroll">
+  <div class="hero-scroll" onclick="document.getElementById('about').scrollIntoView({behavior: 'smooth'})" title="Click to scroll">
     <div class="scroll-line"></div>
     Scroll to explore
   </div>
   <div class="hero-meta">
+    <span class="live-indicator"></span>LIVE<br>
     EST. 2024<br>
     ALL ENGINEERING BRANCHES<br>
-    ALL YEARS
+    ALL YEARS<br>
+    <span id="current-time"></span>
   </div>
 </section>
 
 <!-- STAT STRIP -->
 <div class="stat-strip">
-  <div class="stat reveal">
+  <div class="stat reveal visible">
     <div class="stat-number">7<sup>+</sup></div>
     <div class="stat-label">Engineering Disciplines</div>
   </div>
-  <div class="stat reveal reveal-delay-1">
+  <div class="stat reveal reveal-delay-1 visible">
     <div class="stat-number">4</div>
     <div class="stat-label">Academic Years Supported</div>
   </div>
-  <div class="stat reveal reveal-delay-2">
+  <div class="stat reveal reveal-delay-2 visible">
     <div class="stat-number">∞</div>
     <div class="stat-label">Archival Depth</div>
   </div>
-  <div class="stat reveal reveal-delay-3">
+  <div class="stat reveal reveal-delay-3 visible">
     <div class="stat-number">01</div>
     <div class="stat-label">Singular Purpose</div>
   </div>
@@ -1390,13 +2372,13 @@
 <section class="about" id="about">
   <div class="section-label">Philosophy</div>
   <div class="about-grid">
-    <div class="reveal">
+    <div class="reveal visible">
       <h2 class="about-headline">
         Engineering demands evidence,<br>
         <em style="color: var(--gray-500); font-style: italic;">not promises.</em>
       </h2>
     </div>
-    <div class="about-body reveal reveal-delay-2">
+    <div class="about-body reveal reveal-delay-2 visible">
       <p>
         PrimoraX.labs was built on a simple premise: the thinking behind an engineering project is as valuable as the project itself. Most student work disappears after evaluation. We exist to prevent that.
       </p>
@@ -1410,17 +2392,17 @@
   </div>
 
   <div class="about-pillars">
-    <div class="pillar reveal">
+    <div class="pillar reveal visible">
       <div class="pillar-number">01 — BUILD</div>
       <div class="pillar-title">Real Projects</div>
       <div class="pillar-desc">Engineering work that functions beyond academic evaluation. Systems, not submissions.</div>
     </div>
-    <div class="pillar reveal reveal-delay-1">
+    <div class="pillar reveal reveal-delay-1 visible">
       <div class="pillar-number">02 — DOCUMENT</div>
       <div class="pillar-title">Preserve Thinking</div>
       <div class="pillar-desc">The architecture, decision-making, and intent behind each project is recorded with the same rigor as the output.</div>
     </div>
-    <div class="pillar reveal reveal-delay-2">
+    <div class="pillar reveal reveal-delay-2 visible">
       <div class="pillar-number">03 — SHOWCASE</div>
       <div class="pillar-title">Technical Exhibits</div>
       <div class="pillar-desc">Projects presented as case studies — not portfolio pieces. Context, methodology, outcome.</div>
@@ -1429,7 +2411,7 @@
 </section>
 
 <!-- MANIFESTO -->
-<div class="manifesto reveal">
+<div class="manifesto reveal visible">
   <p class="manifesto-text">
     "Most engineering work disappears at submission. <strong>We believe the process deserves permanence.</strong> The diagram sketched at 2am. The failed prototype that taught more than the working one. The decision to use one topology over another, and why. <strong>This is what PrimoraX preserves.</strong>"
   </p>
@@ -1439,23 +2421,23 @@
 <section class="lab-section" id="lab">
   <div class="section-label">Virtual Electronics Lab</div>
   <div class="lab-header">
-    <h2 class="lab-title reveal">
+    <h2 class="lab-title reveal visible">
       A research environment<br>
       <em style="font-style: italic; color: var(--gray-400);">you can interact with.</em>
     </h2>
-    <p class="lab-desc reveal reveal-delay-2">
+    <p class="lab-desc reveal reveal-delay-2 visible">
       An interactive simulation of core electronics concepts. Explore signal behavior, logic states, and circuit dynamics — precise, visual, unhurried. Each module reveals its principles through direct interaction.
     </p>
   </div>
 
-  <div class="lab-environment reveal">
+  <div class="lab-environment reveal visible">
     <div class="lab-tabs">
-      <button class="lab-tab active" onclick="switchTab('oscilloscope', this)">Oscilloscope</button>
-      <button class="lab-tab" onclick="switchTab('pwm', this)">PWM / Motor</button>
-      <button class="lab-tab" onclick="switchTab('rc', this)">RC Circuit</button>
-      <button class="lab-tab" onclick="switchTab('logic', this)">Logic Gates</button>
-      <button class="lab-tab" onclick="switchTab('transistor', this)">Transistor</button>
-      <button class="lab-tab" onclick="switchTab('timer555', this)">555 Timer</button>
+      <button class="lab-tab active" onclick="switchTab(&#39;oscilloscope&#39;, this)">Oscilloscope</button>
+      <button class="lab-tab" onclick="switchTab(&#39;pwm&#39;, this)">PWM / Motor</button>
+      <button class="lab-tab" onclick="switchTab(&#39;rc&#39;, this)">RC Circuit</button>
+      <button class="lab-tab" onclick="switchTab(&#39;logic&#39;, this)">Logic Gates</button>
+      <button class="lab-tab" onclick="switchTab(&#39;transistor&#39;, this)">Transistor</button>
+      <button class="lab-tab" onclick="switchTab(&#39;timer555&#39;, this)">555 Timer</button>
     </div>
 
     <div class="lab-canvas-area">
@@ -1466,10 +2448,10 @@
           <div class="osc-header">
             <span class="osc-label">CH1 — SIGNAL ANALYZER — 5V/DIV</span>
             <div class="osc-controls">
-              <button class="osc-btn active" onclick="setWave('sine', this)">SINE</button>
-              <button class="osc-btn" onclick="setWave('square', this)">SQUARE</button>
-              <button class="osc-btn" onclick="setWave('pwm', this)">PWM</button>
-              <button class="osc-btn" onclick="setWave('sawtooth', this)">SAW</button>
+              <button class="osc-btn active" onclick="setWave(&#39;sine&#39;, this)">SINE</button>
+              <button class="osc-btn" onclick="setWave(&#39;square&#39;, this)">SQUARE</button>
+              <button class="osc-btn" onclick="setWave(&#39;pwm&#39;, this)">PWM</button>
+              <button class="osc-btn" onclick="setWave(&#39;sawtooth&#39;, this)">SAW</button>
             </div>
           </div>
           <canvas id="oscilloscope" width="1000" height="220"></canvas>
@@ -1500,7 +2482,7 @@
           <div class="pwm-motor-vis">
             <div class="motor-outer">
               <div class="motor-inner" id="motor-inner">
-                <div class="motor-blade" id="motor-blade"></div>
+                <div class="motor-blade" id="motor-blade" style="transform: translateY(-50%) rotate(0deg);"></div>
                 <div class="motor-shaft"></div>
               </div>
             </div>
@@ -1521,7 +2503,7 @@
               </div>
               <input type="range" min="1" max="100" value="1" oninput="updatePWMFreq(this.value)">
             </div>
-            <div style="padding: 20px; background: rgba(200,169,110,0.04); border: 1px solid rgba(200,169,110,0.1);">
+            <div style="padding: 20px; background: rgba(0, 212, 255, 0.04); border: 1px solid var(--accent); box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);">
               <p style="font-family: var(--mono); font-size: 10px; color: var(--gray-500); line-height: 1.8; letter-spacing: 0.05em;">
                 PWM controls motor speed by varying the ON-time fraction of a fixed-period signal. Higher duty cycle → more average power → higher RPM.
               </p>
@@ -1534,36 +2516,36 @@
       <div class="lab-panel" id="panel-rc">
         <div class="rc-container">
           <div class="rc-graph">
-            <div style="font-family: var(--mono); font-size: 10px; color: rgba(100,160,255,0.5); letter-spacing: 0.2em; margin-bottom: 16px;">CAPACITOR VOLTAGE — V(t)</div>
+            <div style="font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.2em; margin-bottom: 16px; text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);">CAPACITOR VOLTAGE — V(t)</div>
             <canvas id="rcCanvas" width="1000" height="200"></canvas>
           </div>
           <div class="rc-controls">
             <div>
               <div class="control-label" style="color: var(--gray-500);">
                 RESISTANCE
-                <span style="color: #64a0ff;" id="rc-r-val">10 kΩ</span>
+                <span style="color: var(--accent); text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);" id="rc-r-val">10 kΩ</span>
               </div>
-              <input type="range" min="1" max="100" value="10" oninput="updateRC('r', this.value)">
+              <input type="range" min="1" max="100" value="10" oninput="updateRC(&#39;r&#39;, this.value)">
             </div>
             <div>
               <div class="control-label" style="color: var(--gray-500);">
                 CAPACITANCE
-                <span style="color: #64a0ff;" id="rc-c-val">100 μF</span>
+                <span style="color: var(--accent); text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);" id="rc-c-val">100 μF</span>
               </div>
-              <input type="range" min="1" max="200" value="100" oninput="updateRC('c', this.value)">
+              <input type="range" min="1" max="200" value="100" oninput="updateRC(&#39;c&#39;, this.value)">
             </div>
             <div>
               <div class="control-label" style="color: var(--gray-500);">
                 MODE
               </div>
               <div style="display: flex; gap: 8px;">
-                <button class="osc-btn active" style="border-color: rgba(100,160,255,0.4); color: rgba(100,160,255,0.8);" id="rc-charge-btn" onclick="setRCMode('charge', this)">CHARGE</button>
-                <button class="osc-btn" style="border-color: rgba(100,160,255,0.2); color: rgba(100,160,255,0.4);" id="rc-discharge-btn" onclick="setRCMode('discharge', this)">DISCHARGE</button>
+                <button class="osc-btn active" style="border-color: var(--accent); color: var(--accent); box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);" id="rc-charge-btn" onclick="setRCMode(&#39;charge&#39;, this)">CHARGE</button>
+                <button class="osc-btn" style="border-color: var(--accent-dim); color: var(--gray-500);" id="rc-discharge-btn" onclick="setRCMode(&#39;discharge&#39;, this)">DISCHARGE</button>
               </div>
             </div>
-            <div style="padding: 20px; background: rgba(100,160,255,0.03); border: 1px solid rgba(100,160,255,0.1);">
-              <div id="tau-display" style="font-family: var(--mono); font-size: 18px; color: rgba(100,160,255,0.8); margin-bottom: 6px;">τ = 1.0 s</div>
-              <div style="font-family: var(--mono); font-size: 10px; color: rgba(100,160,255,0.35); letter-spacing: 0.1em;">TIME CONSTANT τ = RC</div>
+            <div style="padding: 20px; background: rgba(0, 212, 255, 0.03); border: 1px solid var(--accent); box-shadow: 0 0 12px rgba(0, 212, 255, 0.1);">
+              <div id="tau-display" style="font-family: var(--mono); font-size: 18px; color: var(--accent); margin-bottom: 6px; text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);">τ = 1.0 s</div>
+              <div style="font-family: var(--mono); font-size: 10px; color: var(--accent-dim); letter-spacing: 0.1em;">TIME CONSTANT τ = RC</div>
             </div>
           </div>
         </div>
@@ -1572,54 +2554,54 @@
       <!-- LOGIC GATES -->
       <div class="lab-panel" id="panel-logic">
         <div class="logic-container">
-          <div style="text-align: center; font-family: var(--mono); font-size: 10px; color: var(--gray-500); letter-spacing: 0.2em; margin-bottom: 8px;">SELECT GATE — TOGGLE INPUTS</div>
+          <div style="text-align: center; font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.2em; margin-bottom: 8px; text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);">SELECT GATE — TOGGLE INPUTS</div>
           <div class="gate-selector" style="justify-content: center;">
-            <button class="gate-btn active" onclick="setGate('AND', this)">AND</button>
-            <button class="gate-btn" onclick="setGate('OR', this)">OR</button>
-            <button class="gate-btn" onclick="setGate('NAND', this)">NAND</button>
-            <button class="gate-btn" onclick="setGate('NOR', this)">NOR</button>
-            <button class="gate-btn" onclick="setGate('XOR', this)">XOR</button>
-            <button class="gate-btn" onclick="setGate('XNOR', this)">XNOR</button>
+            <button class="gate-btn active" onclick="setGate(&#39;AND&#39;, this)">AND</button>
+            <button class="gate-btn" onclick="setGate(&#39;OR&#39;, this)">OR</button>
+            <button class="gate-btn" onclick="setGate(&#39;NAND&#39;, this)">NAND</button>
+            <button class="gate-btn" onclick="setGate(&#39;NOR&#39;, this)">NOR</button>
+            <button class="gate-btn" onclick="setGate(&#39;XOR&#39;, this)">XOR</button>
+            <button class="gate-btn" onclick="setGate(&#39;XNOR&#39;, this)">XNOR</button>
           </div>
           <div class="logic-gate-section" style="justify-content: center;">
             <div class="logic-inputs">
-              <div class="logic-bit" id="bit-a" onclick="toggleBit('a')">0</div>
-              <div class="logic-bit" id="bit-b" onclick="toggleBit('b')">0</div>
+              <div class="logic-bit" id="bit-a" onclick="toggleBit(&#39;a&#39;)">0</div>
+              <div class="logic-bit" id="bit-b" onclick="toggleBit(&#39;b&#39;)">0</div>
             </div>
             <div style="padding: 0 40px; text-align: center;">
-              <div style="font-family: var(--mono); font-size: 24px; color: var(--gray-700); letter-spacing: 0.05em; margin-bottom: 16px;" id="gate-display">AND</div>
+              <div style="font-family: var(--mono); font-size: 24px; color: var(--accent-dim); letter-spacing: 0.05em; margin-bottom: 16px;" id="gate-display">AND</div>
               <svg width="80" height="60" viewBox="0 0 80 60" id="gate-svg">
-                <path d="M10 10 L10 50 L40 50 Q70 50 70 30 Q70 10 40 10 Z" fill="none" stroke="rgba(200,169,110,0.3)" stroke-width="1.5"/>
-                <line x1="0" y1="20" x2="10" y2="20" stroke="rgba(200,169,110,0.4)" stroke-width="1"/>
-                <line x1="0" y1="40" x2="10" y2="40" stroke="rgba(200,169,110,0.4)" stroke-width="1"/>
-                <line x1="70" y1="30" x2="80" y2="30" stroke="rgba(200,169,110,0.4)" stroke-width="1"/>
+                <path d="M10 10 L10 50 L40 50 Q70 50 70 30 Q70 10 40 10 Z" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0.5"></path>
+                <line x1="0" y1="20" x2="10" y2="20" stroke="var(--accent-dim)" stroke-width="1" opacity="0.5"></line>
+                <line x1="0" y1="40" x2="10" y2="40" stroke="var(--accent-dim)" stroke-width="1" opacity="0.5"></line>
+                <line x1="70" y1="30" x2="80" y2="30" stroke="var(--accent-dim)" stroke-width="1" opacity="0.5"></line>
               </svg>
             </div>
             <div class="logic-output-led" id="output-led" style="margin-left: 20px;">
               OUT
             </div>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--gray-700); border: 1px solid var(--gray-700); max-width: 400px; margin: 0 auto;">
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--gray-500); letter-spacing: 0.1em;">A</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--gray-500); letter-spacing: 0.1em;">B</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em;" id="tt-label">AND</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--gray-500); letter-spacing: 0.1em;">OUT</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">0</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">0</div>
-            <div style="background: var(--black); padding: 12px;"></div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);" id="tt-00">0</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">0</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">1</div>
-            <div style="background: var(--black); padding: 12px;"></div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);" id="tt-01">0</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">1</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">0</div>
-            <div style="background: var(--black); padding: 12px;"></div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);" id="tt-10">0</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">1</div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);">1</div>
-            <div style="background: var(--black); padding: 12px;"></div>
-            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400);" id="tt-11">1</div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--accent-dim); border: 1px solid var(--accent); max-width: 400px; margin: 0 auto; box-shadow: 0 0 12px rgba(0, 212, 255, 0.2);">
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--gray-500); letter-spacing: 0.1em; border: 1px solid var(--accent-dim);">A</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--gray-500); letter-spacing: 0.1em; border: 1px solid var(--accent-dim);">B</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.1em; text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);" id="tt-label">AND</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 10px; color: var(--gray-500); letter-spacing: 0.1em; border: 1px solid var(--accent-dim);">OUT</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">0</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">0</div>
+            <div style="background: var(--black); padding: 12px; border: 1px solid var(--accent-dim);"></div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);" id="tt-00">0</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">0</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">1</div>
+            <div style="background: var(--black); padding: 12px; border: 1px solid var(--accent-dim);"></div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);" id="tt-01">0</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">1</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">0</div>
+            <div style="background: var(--black); padding: 12px; border: 1px solid var(--accent-dim);"></div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);" id="tt-10">0</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">1</div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);">1</div>
+            <div style="background: var(--black); padding: 12px; border: 1px solid var(--accent-dim);"></div>
+            <div style="background: var(--black); padding: 12px; text-align: center; font-family: var(--mono); font-size: 12px; color: var(--gray-400); border: 1px solid var(--accent-dim);" id="tt-11">1</div>
           </div>
         </div>
       </div>
@@ -1630,22 +2612,22 @@
           <div style="text-align: center;">
             <svg viewBox="0 0 280 300" width="280" class="transistor-svg">
               <!-- Collector -->
-              <line x1="140" y1="20" x2="140" y2="100" stroke="rgba(200,169,110,0.4)" stroke-width="1.5"/>
-              <text x="148" y="55" fill="rgba(200,169,110,0.5)" font-family="monospace" font-size="11" letter-spacing="1">VCC</text>
+              <line x1="140" y1="20" x2="140" y2="100" stroke="var(--accent-dim)" stroke-width="1.5" opacity="0.6"></line>
+              <text x="148" y="55" fill="var(--accent-dim)" font-family="monospace" font-size="11" letter-spacing="1" opacity="0.7">VCC</text>
               <!-- Emitter -->
-              <line x1="140" y1="200" x2="140" y2="280" stroke="rgba(200,169,110,0.4)" stroke-width="1.5"/>
-              <text x="148" y="265" fill="rgba(200,169,110,0.5)" font-family="monospace" font-size="11" letter-spacing="1">GND</text>
+              <line x1="140" y1="200" x2="140" y2="280" stroke="var(--accent-dim)" stroke-width="1.5" opacity="0.6"></line>
+              <text x="148" y="265" fill="var(--accent-dim)" font-family="monospace" font-size="11" letter-spacing="1" opacity="0.7">GND</text>
               <!-- Base -->
-              <line x1="20" y1="150" x2="100" y2="150" stroke="rgba(200,169,110,0.4)" stroke-width="1.5"/>
-              <text x="24" y="142" fill="rgba(200,169,110,0.5)" font-family="monospace" font-size="11" letter-spacing="1">BASE</text>
+              <line x1="20" y1="150" x2="100" y2="150" stroke="var(--accent-dim)" stroke-width="1.5" opacity="0.6"></line>
+              <text x="24" y="142" fill="var(--accent-dim)" font-family="monospace" font-size="11" letter-spacing="1" opacity="0.7">BASE</text>
               <!-- Transistor body -->
-              <rect x="100" y="100" width="80" height="100" fill="none" stroke="rgba(200,169,110,0.25)" stroke-width="1.5"/>
-              <text x="123" y="148" fill="rgba(200,169,110,0.6)" font-family="monospace" font-size="14" font-weight="500">BJT</text>
-              <text x="118" y="162" fill="rgba(200,169,110,0.3)" font-family="monospace" font-size="9">NPN</text>
+              <rect x="100" y="100" width="80" height="100" fill="none" stroke="var(--accent-dim)" stroke-width="1.5" opacity="0.5"></rect>
+              <text x="123" y="148" fill="var(--accent)" font-family="monospace" font-size="14" font-weight="500">BJT</text>
+              <text x="118" y="162" fill="var(--accent-dim)" font-family="monospace" font-size="9" opacity="0.6">NPN</text>
               <!-- Signal indicators -->
-              <circle cx="70" cy="150" r="5" fill="rgba(200,169,110,0.2)" stroke="rgba(200,169,110,0.5)" stroke-width="1" id="base-dot"/>
-              <circle cx="140" cy="40" r="5" fill="rgba(200,169,110,0.2)" stroke="rgba(200,169,110,0.5)" stroke-width="1" id="collector-dot"/>
-              <circle cx="140" cy="260" r="5" fill="rgba(200,169,110,0.2)" stroke="rgba(200,169,110,0.5)" stroke-width="1" id="emitter-dot"/>
+              <circle cx="70" cy="150" r="5" fill="var(--accent-dim)" fill-opacity="0.3" stroke="var(--accent-dim)" stroke-width="1" opacity="0.6" id="base-dot"></circle>
+              <circle cx="140" cy="40" r="5" fill="var(--accent-dim)" fill-opacity="0.3" stroke="var(--accent-dim)" stroke-width="1" opacity="0.6" id="collector-dot"></circle>
+              <circle cx="140" cy="260" r="5" fill="var(--accent-dim)" fill-opacity="0.3" stroke="var(--accent-dim)" stroke-width="1" opacity="0.6" id="emitter-dot"></circle>
             </svg>
           </div>
           <div class="signal-flow">
@@ -1679,7 +2661,7 @@
               </div>
               <input type="range" min="0" max="100" value="0" oninput="updateBJT(this.value)">
             </div>
-            <div style="padding: 16px; background: rgba(200,169,110,0.04); border: 1px solid rgba(200,169,110,0.1); margin-top: 8px;">
+            <div style="padding: 16px; background: rgba(0, 212, 255, 0.04); border: 1px solid var(--accent); margin-top: 8px; box-shadow: 0 0 12px rgba(0, 212, 255, 0.1);">
               <div style="font-family: var(--mono); font-size: 10px; color: var(--gray-500); line-height: 1.8; letter-spacing: 0.05em;" id="bjt-state">
                 TRANSISTOR: CUTOFF — No base current. CE junction closed.
               </div>
@@ -1692,22 +2674,22 @@
       <div class="lab-panel" id="panel-timer555">
         <div class="timer-container">
           <div class="timer-states">
-            <div class="timer-state active" id="mode-astable" onclick="set555Mode('astable', this)">
+            <div class="timer-state active" id="mode-astable" onclick="set555Mode(&#39;astable&#39;, this)">
               <div class="state-name">Astable</div>
               <div class="state-pin">FREE-RUN</div>
               <div class="state-desc">Continuous oscillation. No stable state.</div>
             </div>
-            <div class="timer-state" id="mode-monostable" onclick="set555Mode('monostable', this)">
+            <div class="timer-state" id="mode-monostable" onclick="set555Mode(&#39;monostable&#39;, this)">
               <div class="state-name">Monostable</div>
               <div class="state-pin">ONE-SHOT</div>
               <div class="state-desc">Single pulse on trigger event.</div>
             </div>
-            <div class="timer-state" id="mode-bistable" onclick="set555Mode('bistable', this)">
+            <div class="timer-state" id="mode-bistable" onclick="set555Mode(&#39;bistable&#39;, this)">
               <div class="state-name">Bistable</div>
               <div class="state-pin">SR LATCH</div>
               <div class="state-desc">Two stable states. Flip-flop behavior.</div>
             </div>
-            <div class="timer-state" id="mode-pwm555" onclick="set555Mode('pwm555', this)">
+            <div class="timer-state" id="mode-pwm555" onclick="set555Mode(&#39;pwm555&#39;, this)">
               <div class="state-name">PWM Mode</div>
               <div class="state-pin">VARIABLE</div>
               <div class="state-desc">Variable duty cycle output via control pin.</div>
@@ -1765,7 +2747,7 @@
               </div>
             </div>
           </div>
-          <div id="timer-info" style="font-family: var(--mono); font-size: 11px; color: var(--gray-500); letter-spacing: 0.1em; line-height: 1.8; padding: 24px; background: rgba(200,169,110,0.03); border: 1px solid rgba(200,169,110,0.08);">
+          <div id="timer-info" style="font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; line-height: 1.8; padding: 24px; background: rgba(0, 212, 255, 0.03); border: 1px solid var(--accent); box-shadow: 0 0 12px rgba(0, 212, 255, 0.1); text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);">
             ASTABLE MODE — Pins 2 and 6 connected. Capacitor charges through R1+R2, discharges through R2. Output oscillates continuously. Frequency = 1.44 / ((R1 + 2·R2) · C).
           </div>
         </div>
@@ -1779,20 +2761,20 @@
 <section class="projects-section" id="projects">
   <div class="section-label">Projects</div>
   <div class="projects-header">
-    <h2 class="projects-title reveal">
+    <h2 class="projects-title reveal visible">
       Real projects.<br>
       Preserved.
     </h2>
-    <p class="projects-note reveal">
+    <p class="projects-note reveal visible">
       Each project documented as a technical exhibit. Process, decisions, and outcomes presented with precision.
     </p>
   </div>
 
   <div class="projects-grid">
-    <div class="project-card reveal">
+    <div class="project-card reveal visible">
       <div class="project-index">PROJ — 001</div>
-      <div class="project-name">IoT Plant Watering & Monitoring System</div>
-      <div class="project-branch">Embedded Systems · Electronics & IoT</div>
+      <div class="project-name">IoT Plant Watering &amp; Monitoring System</div>
+      <div class="project-branch">Embedded Systems · Electronics &amp; IoT</div>
       <div class="project-desc">Autonomous soil moisture sensing and irrigation control using microcontroller firmware in C++. Real-time monitoring dashboard, relay actuation, and threshold-based decision logic with full hardware schematics.</div>
       <div class="project-tags">
         <span class="tag">C++</span>
@@ -1801,7 +2783,7 @@
         <span class="tag">Sensors</span>
       </div>
     </div>
-    <div class="project-card reveal reveal-delay-1">
+    <div class="project-card reveal reveal-delay-1 visible">
       <div class="project-index">PROJ — 002</div>
       <div class="project-name">Skin Disease Detection — AI-Based</div>
       <div class="project-branch">AI / ML · Biomedical Engineering</div>
@@ -1813,7 +2795,7 @@
         <span class="tag">Medical AI</span>
       </div>
     </div>
-    <div class="project-card reveal">
+    <div class="project-card reveal visible">
       <div class="project-index">PROJ — 003</div>
       <div class="project-name">Facial-Based Attendance System</div>
       <div class="project-branch">AI / ML · Computer Science</div>
@@ -1825,7 +2807,7 @@
         <span class="tag">Automation</span>
       </div>
     </div>
-    <div class="project-card reveal reveal-delay-1">
+    <div class="project-card reveal reveal-delay-1 visible">
       <div class="project-index">PROJ — 004</div>
       <div class="project-name">Child Health Monitoring System— Web Application</div>
       <div class="project-branch">Web Development · Computer Science</div>
@@ -1837,7 +2819,7 @@
         <span class="tag">UI Design</span>
       </div>
     </div>
-    <div class="project-card reveal">
+    <div class="project-card reveal visible">
       <div class="project-index">PROJ — 005</div>
       <div class="project-name">Mechanic Hub</div>
       <div class="project-branch">Web Development · Computer Science</div>
@@ -1849,7 +2831,7 @@
         <span class="tag">UX</span>
       </div>
     </div>
-    <div class="project-card reveal reveal-delay-1">
+    <div class="project-card reveal reveal-delay-1 visible">
       <div class="project-index">PROJ — 006</div>
       <div class="project-name">Forensic Sketch Application</div>
       <div class="project-branch">Python · AI / Forensic Science</div>
@@ -1861,7 +2843,7 @@
         <span class="tag">CV</span>
       </div>
     </div>
-    <div class="project-card reveal">
+    <div class="project-card reveal visible">
       <div class="project-index">PROJ — 007</div>
       <div class="project-name">Fight Detection System</div>
       <div class="project-branch">Computer Vision · AI / ML</div>
@@ -1873,7 +2855,7 @@
         <span class="tag">Surveillance</span>
       </div>
     </div>
-    <div class="project-card reveal reveal-delay-1">
+    <div class="project-card reveal reveal-delay-1 visible">
       <div class="project-index">PROJ — 008</div>
       <div class="project-name">Voice Assistant</div>
       <div class="project-branch">Python · Human-Computer Interaction</div>
@@ -1885,7 +2867,7 @@
         <span class="tag">HCI</span>
       </div>
     </div>
-    <div class="project-card reveal">
+    <div class="project-card reveal visible">
       <div class="project-index">PROJ — 009</div>
       <div class="project-name">Voice-Based App Opener</div>
       <div class="project-branch">Python · Systems Automation</div>
@@ -1897,7 +2879,7 @@
         <span class="tag">OS Integration</span>
       </div>
     </div>
-    <div class="project-card reveal reveal-delay-1">
+    <div class="project-card reveal reveal-delay-1 visible">
       <div class="project-index">PROJ — 010</div>
       <div class="project-name">Type-Based App Opener</div>
       <div class="project-branch">Python · Systems Automation</div>
@@ -1909,7 +2891,7 @@
         <span class="tag">Productivity</span>
       </div>
     </div>
-    <div class="project-card reveal">
+    <div class="project-card reveal visible">
       <div class="project-index">PROJ — 011</div>
       <div class="project-name">Wireless Charger Heat Reduction Simulation</div>
       <div class="project-branch">Python · Electrical Engineering</div>
@@ -1921,10 +2903,10 @@
         <span class="tag">Power Electronics</span>
       </div>
     </div>
-    <div class="project-card reveal reveal-delay-1">
+    <div class="project-card reveal reveal-delay-1 visible">
       <div class="project-index">PROJ — 012</div>
-      <div class="project-name">Image & Video Real-Time Stabilisation</div>
-      <div class="project-branch">Python · Signals & Systems</div>
+      <div class="project-name">Image &amp; Video Real-Time Stabilisation</div>
+      <div class="project-branch">Python · Signals &amp; Systems</div>
       <div class="project-desc">Real-time digital stabilisation system for image and video streams using motion estimation and frame compensation algorithms. DSP pipeline, filter design, and performance analysis under varying motion conditions.</div>
       <div class="project-tags">
         <span class="tag">Python</span>
@@ -1940,29 +2922,22 @@
 <section class="team-section" id="team">
   <div class="section-label">The Team</div>
   <div class="team-header">
-    <h2 class="team-title reveal">
+    <h2 class="team-title reveal visible">
       Engineers.<br>
       Collaborators.<br>
       <em style="font-style: italic; color: var(--gray-500);">Builders.</em>
     </h2>
-    <p class="team-intro reveal reveal-delay-2">
+    <p class="team-intro reveal reveal-delay-2 visible">
       PrimoraX is built by students, for students. Each contributor takes ownership of a discipline. No hierarchy beyond responsibility.
     </p>
   </div>
 
   <div class="team-grid">
     <!-- FOUNDER CARD -->
-    <div class="team-card founder reveal">
+    <div class="team-card founder reveal visible">
       <div class="founder-left">
         <div class="team-name">Sumukh Bharadwaj K S</div>
-        <div class="team-role">Founder & CEO · Systems Architect</div>
-        <ul class="team-responsibilities">
-          <li>Vision, roadmap, and organizational direction</li>
-          <li>Hardware–software system architecture</li>
-          <li>Final technical decisions and quality standards</li>
-          <li>Design review and output validation</li>
-          <li>External representation and technical pitching</li>
-        </ul>
+        <div class="team-role">Founder &amp; CEO · Systems Architect</div>
       </div>
       <div class="founder-right">
         <p class="founder-statement">
@@ -1973,79 +2948,59 @@
     </div>
 
     <!-- TEAM MEMBERS -->
-    <div class="team-card reveal">
+    <div class="team-card reveal visible">
       <div class="team-name">Vishal Rajoor</div>
-      <div class="team-role">Electronics Design & Fabrication Lead</div>
-      <ul class="team-responsibilities">
-        <li>PCB design and prototyping</li>
-        <li>Circuit fabrication and testing</li>
-        <li>Component selection</li>
-        <li>Electrical reliability engineering</li>
-      </ul>
+      <div class="team-role">Electronics Design &amp; Fabrication Lead</div>
     </div>
 
-    <div class="team-card reveal reveal-delay-1">
+    <div class="team-card reveal reveal-delay-1 visible">
       <div class="team-name">Yashas Raj</div>
-      <div class="team-role">Mechanical Systems & Prototyping Lead</div>
-      <ul class="team-responsibilities">
-        <li>Mechanical and enclosure design</li>
-        <li>Electronics–mechanics integration</li>
-        <li>Structural feasibility analysis</li>
-        <li>Mechanical system optimization</li>
-      </ul>
+      <div class="team-role">Mechanical Systems &amp; Prototyping Lead</div>
     </div>
 
-    <div class="team-card reveal reveal-delay-2">
+    <div class="team-card reveal reveal-delay-2 visible">
       <div class="team-name">Vaishakh Shetty B</div>
       <div class="team-role">Systems Analysis Engineer</div>
-      <ul class="team-responsibilities">
-        <li>System performance analysis</li>
-        <li>Failure mode analysis</li>
-        <li>Optimization recommendations</li>
-        <li>Simulations and engineering calculations</li>
-      </ul>
     </div>
 
-    <div class="team-card reveal">
+    <div class="team-card reveal visible">
       <div class="team-name">Taman Subbaiah</div>
-      <div class="team-role">Research & Validation Engineer</div>
-      <ul class="team-responsibilities">
-        <li>Technical research and literature review</li>
-        <li>Design validation protocols</li>
-        <li>Assumption testing and verification</li>
-        <li>Documentation of findings</li>
-      </ul>
+      <div class="team-role">Research &amp; Validation Engineer</div>
     </div>
 
-    <div class="team-card reveal reveal-delay-1">
+    <div class="team-card reveal reveal-delay-1 visible">
       <div class="team-name">Thilak Balaji</div>
-      <div class="team-role">Media, Video & VFX Lead</div>
-      <ul class="team-responsibilities">
-        <li>Project showcase and documentation videos</li>
-        <li>Launch teasers and motion content</li>
-        <li>Visual storytelling and narrative</li>
-        <li>Motion brand consistency</li>
-      </ul>
+      <div class="team-role">Media, Video &amp; VFX Lead</div>
     </div>
 
-    <div class="team-card reveal reveal-delay-2">
+    <div class="team-card reveal reveal-delay-2 visible">
       <div class="team-name">Bindushree H M</div>
-      <div class="team-role">Coordination & Documentation Lead</div>
-      <ul class="team-responsibilities">
-        <li>Project reports and technical summaries</li>
-        <li>Task tracking and team coordination</li>
-        <li>Timeline management</li>
-        <li>Presentation and research support</li>
-      </ul>
+      <div class="team-role">Project Requirements Analyst &amp; Documentation Lead</div>
     </div>
 
+<div class="team-card reveal visible" style="grid-column-start: 2;">
+  <div class="team-name">Manoj Y S</div>
+  <div class="team-role">Testing Team Lead</div>
+</div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <div>
-    <div class="footer-brand">PrimoraX<span>.</span>labs</div>
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <!-- 
+          TO ADD YOUR LOGO:
+          1. Place your logo file (logo.png or logo.svg) in the same folder as this HTML file
+          2. Uncomment the img tag below and comment out the placeholder span
+          3. Update the src path if your logo has a different name
+        -->
+        <!-- <img src="logo.png" alt="PrimoraX Labs" /> -->
+        <span style="font-family: var(--mono); font-size: 24px; color: var(--accent); font-weight: bold;">PX</span>
+      </div>
+      <div class="footer-brand-text">PrimoraX<span>.</span>labs</div>
+    </div>
     <div class="footer-tagline">A student-led engineering lab and technical archive. Built for students who build seriously.</div>
   </div>
   <div class="footer-col">
@@ -2060,10 +3015,10 @@
   <div class="footer-col">
     <div class="footer-col-label">Lab Focus</div>
     <ul class="footer-links">
-      <li><a href="#">Mini Projects</a></li>
-      <li><a href="#">Major Projects</a></li>
-      <li><a href="#">Final Year Projects</a></li>
-      <li><a href="#">Research Archive</a></li>
+      <li><a href="#projects">Mini Projects</a></li>
+      <li><a href="#projects">Major Projects</a></li>
+      <li><a href="#projects">Final Year Projects</a></li>
+      <li><a href="#projects">Research Archive</a></li>
     </ul>
   </div>
 </footer>
@@ -2073,6 +3028,189 @@
 </div>
 
 <script>
+// ============================================================
+// SPLASH SCREEN & LOCATION DETECTION
+// ============================================================
+let userLocation = null;
+let locationDetected = false;
+
+function detectLocation() {
+  const locationElement = document.getElementById('splashLocation');
+  
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        userLocation = { lat, lon };
+        locationDetected = true;
+        
+        // Reverse geocoding using a free service (no API key needed)
+        // Using a timeout to prevent hanging
+        const timeout = setTimeout(() => {
+          locationElement.textContent = `📍 ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+          sessionStorage.setItem('userLocation', JSON.stringify({ lat, lon }));
+        }, 3000);
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
+          headers: {
+            'User-Agent': 'PrimoraX-Labs-Website'
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            clearTimeout(timeout);
+            const city = data.address.city || data.address.town || data.address.village || data.address.county || '';
+            const country = data.address.country || '';
+            const locationText = city && country ? `${city}, ${country}` : country || 'Location detected';
+            locationElement.textContent = `📍 ${locationText}`;
+            sessionStorage.setItem('userLocation', JSON.stringify({ lat, lon, text: locationText }));
+          })
+          .catch(() => {
+            clearTimeout(timeout);
+            locationElement.textContent = `📍 ${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+            sessionStorage.setItem('userLocation', JSON.stringify({ lat, lon }));
+          });
+      },
+      (error) => {
+        // User denied or error occurred
+        locationDetected = false;
+        locationElement.textContent = '🌍 Global Access';
+        console.log('Location access denied or unavailable');
+      },
+      { timeout: 5000, enableHighAccuracy: false }
+    );
+  } else {
+    locationElement.textContent = '🌍 Global Access';
+  }
+}
+
+function initializeSplashScreen() {
+  // Start location detection immediately
+  detectLocation();
+  
+  // Hide splash screen after animation completes
+  setTimeout(() => {
+    const splashScreen = document.getElementById('splashScreen');
+    if (splashScreen) {
+      splashScreen.classList.add('hidden');
+      // Show main content
+      document.body.style.overflow = 'auto';
+    }
+  }, 3500); // Match loading bar animation duration
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  // Prevent scrolling during splash
+  document.body.style.overflow = 'hidden';
+  
+  // Check if we have stored location
+  const storedLocation = sessionStorage.getItem('userLocation');
+  if (storedLocation) {
+    try {
+      const loc = JSON.parse(storedLocation);
+      const locationElement = document.getElementById('splashLocation');
+      if (locationElement && loc.text) {
+        locationElement.textContent = `📍 ${loc.text}`;
+      }
+    } catch (e) {
+      detectLocation();
+    }
+  }
+  
+  initializeSplashScreen();
+});
+
+// ============================================================
+// NAVBAR SCROLL EFFECT
+// ============================================================
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 50) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+// ============================================================
+// LIVE TIME UPDATER
+// ============================================================
+function updateTime() {
+  const timeElement = document.getElementById('current-time');
+  if (timeElement) {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      hour12: true 
+    });
+    timeElement.textContent = timeString;
+  }
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+updateTime(); // Initial call
+
+// ============================================================
+// LIVE VISITOR COUNTER (Simulated)
+// ============================================================
+function updateVisitorCount() {
+  // Simulate visitor count (starts from a base number)
+  const baseCount = 1247;
+  const randomVariation = Math.floor(Math.random() * 5) - 2; // -2 to +2
+  const visitorCount = baseCount + randomVariation;
+  
+  // Store in sessionStorage to maintain consistency during session
+  if (!sessionStorage.getItem('visitorCount')) {
+    sessionStorage.setItem('visitorCount', visitorCount.toString());
+  }
+  
+  const storedCount = parseInt(sessionStorage.getItem('visitorCount'));
+  const displayCount = storedCount + Math.floor(Math.random() * 3);
+  
+  // Update footer or create a live stats element if needed
+  const footerBottom = document.querySelector('.footer-bottom p');
+  if (footerBottom && !footerBottom.textContent.includes('Visitors')) {
+    const visitorText = document.createElement('span');
+    visitorText.style.marginLeft = '20px';
+    visitorText.style.color = 'var(--accent)';
+    visitorText.textContent = `👥 ${displayCount} Active Visitors`;
+    footerBottom.appendChild(visitorText);
+  }
+}
+
+// Update visitor count every 30 seconds
+setTimeout(updateVisitorCount, 2000);
+setInterval(updateVisitorCount, 30000);
+
+// ============================================================
+// MOBILE MENU
+// ============================================================
+function toggleMobileMenu() {
+  const navLinks = document.getElementById('navLinks');
+  navLinks.classList.toggle('mobile-open');
+}
+
+function closeMobileMenu() {
+  const navLinks = document.getElementById('navLinks');
+  navLinks.classList.remove('mobile-open');
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', (e) => {
+  const nav = document.querySelector('nav');
+  const navLinks = document.getElementById('navLinks');
+  const toggle = document.querySelector('.mobile-menu-toggle');
+  if (navLinks.classList.contains('mobile-open') && 
+      !nav.contains(e.target) && 
+      e.target !== toggle) {
+    closeMobileMenu();
+  }
+});
+
 // ============================================================
 // SCROLL REVEAL
 // ============================================================
@@ -2091,7 +3229,16 @@ function switchTab(name, btn) {
   document.querySelectorAll('.lab-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.lab-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById('panel-' + name).classList.add('active');
+  const panel = document.getElementById('panel-' + name);
+  if (panel) {
+    panel.classList.add('active');
+    // Restart animations when switching tabs
+    if (name === 'oscilloscope') {
+      drawOscilloscope();
+    } else if (name === 'rc') {
+      drawRC();
+    }
+  }
 }
 
 // ============================================================
@@ -2112,6 +3259,11 @@ function setWave(type, btn) {
 function drawOscilloscope() {
   const canvas = document.getElementById('oscilloscope');
   if (!canvas) return;
+  const panel = canvas.closest('.lab-panel');
+  if (panel && !panel.classList.contains('active')) {
+    oscAnimId = requestAnimationFrame(drawOscilloscope);
+    return;
+  }
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
   
@@ -2164,7 +3316,10 @@ function drawOscilloscope() {
   oscAnimId = requestAnimationFrame(drawOscilloscope);
 }
 
-drawOscilloscope();
+// Initialize oscilloscope on load
+if (document.getElementById('oscilloscope')) {
+  drawOscilloscope();
+}
 
 // ============================================================
 // PWM MOTOR
@@ -2186,6 +3341,11 @@ function updatePWMFreq(val) {
 }
 
 function animateMotor() {
+  const panel = document.getElementById('panel-pwm');
+  if (panel && !panel.classList.contains('active')) {
+    requestAnimationFrame(animateMotor);
+    return;
+  }
   motorSpeed += (targetSpeed - motorSpeed) * 0.05;
   motorAngle += motorSpeed;
   const blade = document.getElementById('motor-blade');
@@ -2251,7 +3411,10 @@ function drawRC() {
   ctx.shadowBlur = 0;
 }
 
-drawRC();
+// Initialize RC circuit on load
+if (document.getElementById('rcCanvas')) {
+  drawRC();
+}
 
 // ============================================================
 // LOGIC GATES
@@ -2297,7 +3460,10 @@ function updateTruthTable() {
   document.getElementById('tt-11').textContent = gateLogic[currentGate](1,1);
 }
 
-updateTruthTable();
+// Initialize logic gates truth table
+if (document.getElementById('tt-00')) {
+  updateTruthTable();
+}
 
 // ============================================================
 // TRANSISTOR BJT
@@ -2351,6 +3517,261 @@ function set555Mode(mode, btn) {
     if (dot) dot.classList.toggle('active', active.includes(i));
   }
 }
+
+// ============================================================
+// CHATBOT
+// ============================================================
+const chatbotData = {
+  greetings: [
+    "Hello! I'm the PrimoraX.labs assistant. How can I help you today?",
+    "Hi there! Welcome to PrimoraX.labs. What would you like to know?",
+    "Greetings! I'm here to help you learn about our engineering lab. What can I assist you with?"
+  ],
+  responses: {
+    "hello": ["Hello! How can I help you today?", "Hi there! What would you like to know about PrimoraX.labs?"],
+    "hi": ["Hello! How can I help you today?", "Hi there! What would you like to know about PrimoraX.labs?"],
+    "what is primorax": [
+      "PrimoraX.labs is a student-led engineering lab and technical archive. We build real projects, document them rigorously, and preserve engineering work beyond academic submission.",
+      "We're an engineering lab focused on BUILD, DOCUMENT, and PRESERVE. We support students across all engineering branches and all years."
+    ],
+    "projects": [
+      "We have 12+ documented projects including IoT systems, AI/ML applications, web development, embedded systems, and more. Check out the Projects section!",
+      "Our projects range from IoT Plant Watering Systems to AI-based Skin Disease Detection, Facial Recognition, and many more. All are fully documented with technical details."
+    ],
+    "team": [
+      "Our team includes engineers specializing in electronics, mechanical systems, AI/ML, web development, testing, and documentation. Check the Team section for details!",
+      "We have team members covering Electronics Design, Mechanical Systems, Systems Analysis, Research, Media, Testing, and Website Development."
+    ],
+    "virtual lab": [
+      "Our Virtual Lab includes interactive simulations: Oscilloscope, PWM Motor Control, RC Circuits, Logic Gates, Transistor BJT, and 555 Timer. Try them out!",
+      "Explore our Virtual Electronics Lab with 6 interactive modules. Each demonstrates core electronics concepts through direct interaction."
+    ],
+    "how to join": [
+      "PrimoraX.labs is open to students across all engineering branches and all years. Contact us through the website or reach out to our team members.",
+      "We welcome students from all engineering disciplines. Mini projects, major projects, and final-year capstones are all welcome!"
+    ],
+    "contact": [
+      "You can reach out through our website or contact our team members directly. We're always looking for passionate engineers to join us.",
+      "Feel free to explore our projects and team sections. For specific inquiries, reach out to our founder or team leads."
+    ],
+    "help": [
+      "I can help you learn about PrimoraX.labs, our projects, team, virtual lab, and how to join. What would you like to know?",
+      "Ask me about: what PrimoraX is, our projects, team members, virtual lab features, or how to join!"
+    ],
+    "default": [
+      "That's interesting! Could you tell me more about what you're looking for? I can help with information about PrimoraX.labs, projects, team, or the virtual lab.",
+      "I'm here to help! Try asking about our projects, team, virtual lab, or what PrimoraX.labs does.",
+      "I can help you learn about PrimoraX.labs. Try asking about our projects, team members, virtual lab, or how we work!",
+      "Hmm, I'm not sure about that specific question. But I can tell you about our projects, team members, virtual lab simulations, or how to join PrimoraX.labs!",
+      "Interesting question! I specialize in helping with information about PrimoraX.labs. Try asking about our engineering projects, team structure, or virtual lab features."
+    ]
+  }
+};
+
+let chatbotOpen = false;
+let conversationHistory = [];
+
+function toggleChatbot() {
+  chatbotOpen = !chatbotOpen;
+  const toggle = document.querySelector('.chatbot-toggle');
+  const window = document.querySelector('.chatbot-window');
+  
+  toggle.classList.toggle('active', chatbotOpen);
+  window.classList.toggle('active', chatbotOpen);
+  
+  if (chatbotOpen && conversationHistory.length === 0) {
+    setTimeout(() => {
+      addBotMessage("👋 " + chatbotData.greetings[Math.floor(Math.random() * chatbotData.greetings.length)]);
+      setTimeout(() => {
+        addBotMessage("💡 Try asking: 'What projects do you have?', 'Tell me about the team', or 'What is the virtual lab?'");
+      }, 1500);
+    }, 300);
+  }
+}
+
+function closeChatbot() {
+  chatbotOpen = false;
+  document.querySelector('.chatbot-toggle').classList.remove('active');
+  document.querySelector('.chatbot-window').classList.remove('active');
+}
+
+function addMessage(text, isUser = false) {
+  const messagesContainer = document.querySelector('.chatbot-messages');
+  const messageDiv = document.createElement('div');
+  messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+  
+  const avatar = document.createElement('div');
+  avatar.className = 'message-avatar';
+  avatar.textContent = isUser ? 'U' : 'PX';
+  
+  const content = document.createElement('div');
+  content.className = 'message-content';
+  content.textContent = text;
+  
+  messageDiv.appendChild(avatar);
+  messageDiv.appendChild(content);
+  messagesContainer.appendChild(messageDiv);
+  
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  
+  if (isUser) {
+    conversationHistory.push({ role: 'user', text });
+  }
+}
+
+function addBotMessage(text) {
+  addMessage(text, false);
+  conversationHistory.push({ role: 'bot', text });
+}
+
+function addTypingIndicator() {
+  const messagesContainer = document.querySelector('.chatbot-messages');
+  const typingDiv = document.createElement('div');
+  typingDiv.className = 'message bot';
+  typingDiv.id = 'typing-indicator';
+  
+  const avatar = document.createElement('div');
+  avatar.className = 'message-avatar';
+  avatar.textContent = 'PX';
+  
+  const typing = document.createElement('div');
+  typing.className = 'typing-indicator';
+  typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  
+  typingDiv.appendChild(avatar);
+  typingDiv.appendChild(typing);
+  messagesContainer.appendChild(typingDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function removeTypingIndicator() {
+  const indicator = document.getElementById('typing-indicator');
+  if (indicator) indicator.remove();
+}
+
+function getResponse(userInput) {
+  const input = userInput.toLowerCase().trim();
+  
+  // Check for greetings
+  if (input.match(/^(hello|hi|hey|greetings|good morning|good afternoon|good evening)/)) {
+    return chatbotData.responses.hello[Math.floor(Math.random() * chatbotData.responses.hello.length)];
+  }
+  
+  // Check for thanks
+  if (input.match(/(thanks|thank you|thank|appreciate)/)) {
+    return "You're welcome! Is there anything else you'd like to know about PrimoraX.labs?";
+  }
+  
+  // Check for goodbye
+  if (input.match(/(bye|goodbye|see you|farewell|exit|quit)/)) {
+    return "Goodbye! Feel free to come back anytime if you have more questions about PrimoraX.labs. Build. Document. Preserve. 🚀";
+  }
+  
+  // Check for specific topics
+  for (const [key, responses] of Object.entries(chatbotData.responses)) {
+    if (key === 'default') continue;
+    const keywords = key.split(' ');
+    if (keywords.some(k => input.includes(k))) {
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+  }
+  
+  // Check for project-related queries
+  if (input.match(/(project|iot|ai|ml|web|embedded|system|skin disease|facial|attendance|voice|mechanic|forensic|fight detection|wireless|stabilization|plant watering)/)) {
+    return chatbotData.responses.projects[Math.floor(Math.random() * chatbotData.responses.projects.length)];
+  }
+  
+  // Check for team-related queries
+  if (input.match(/(team|member|founder|engineer|who)/)) {
+    return chatbotData.responses.team[Math.floor(Math.random() * chatbotData.responses.team.length)];
+  }
+  
+  // Check for lab-related queries
+  if (input.match(/(lab|virtual|oscilloscope|pwm|circuit|gate|transistor|timer|simulation|555|rc|logic|motor|signal|wave)/)) {
+    return chatbotData.responses["virtual lab"][Math.floor(Math.random() * chatbotData.responses["virtual lab"].length)];
+  }
+  
+  // Check for join/contact queries
+  if (input.match(/(join|contact|apply|participate|how to|become|member|collaborate|work with)/)) {
+    return chatbotData.responses["how to join"][Math.floor(Math.random() * chatbotData.responses["how to join"].length)];
+  }
+  
+  // Check for what/explain queries
+  if (input.match(/(what is|what are|explain|tell me about|describe|what does)/)) {
+    if (input.match(/(primorax|labs|lab)/)) {
+      return chatbotData.responses["what is primorax"][Math.floor(Math.random() * chatbotData.responses["what is primorax"].length)];
+    }
+  }
+  
+  // Default response
+  return chatbotData.responses.default[Math.floor(Math.random() * chatbotData.responses.default.length)];
+}
+
+function handleChatbotInput() {
+  const input = document.querySelector('.chatbot-input');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  // Add user message
+  addMessage(message, true);
+  input.value = '';
+  
+  // Show typing indicator
+  addTypingIndicator();
+  
+  // Simulate thinking delay
+  setTimeout(() => {
+    removeTypingIndicator();
+    const response = getResponse(message);
+    addBotMessage(response);
+  }, 800 + Math.random() * 500);
+}
+
+// Initialize chatbot
+document.addEventListener('DOMContentLoaded', () => {
+  const sendButton = document.querySelector('.chatbot-send');
+  const input = document.querySelector('.chatbot-input');
+  
+  if (sendButton) {
+    sendButton.addEventListener('click', handleChatbotInput);
+  }
+  
+  if (input) {
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        handleChatbotInput();
+      }
+    });
+  }
+  
+  // Close chatbot when clicking outside
+  document.addEventListener('click', (e) => {
+    const chatbot = document.querySelector('.chatbot-container');
+    if (chatbotOpen && chatbot && !chatbot.contains(e.target)) {
+      // Don't close if clicking on toggle
+      if (!e.target.closest('.chatbot-toggle')) {
+        // closeChatbot(); // Uncomment if you want auto-close on outside click
+      }
+    }
+  });
+});
 </script>
-</body>
-</html>
+
+<!-- CHATBOT -->
+<div class="chatbot-container">
+  <div class="chatbot-window">
+    <div class="chatbot-header">
+      <h3>PrimoraX Assistant</h3>
+      <button class="chatbot-close" onclick="closeChatbot()">×</button>
+    </div>
+    <div class="chatbot-messages" id="chatbotMessages"></div>
+    <div class="chatbot-input-container">
+      <input type="text" class="chatbot-input" placeholder="Ask about projects, team, lab..." />
+      <button class="chatbot-send" onclick="handleChatbotInput()">SEND</button>
+    </div>
+  </div>
+  <button class="chatbot-toggle" onclick="toggleChatbot()" title="Open Chatbot" aria-label="Open Chatbot">💬</button>
+</div>
+
+</body></html>
