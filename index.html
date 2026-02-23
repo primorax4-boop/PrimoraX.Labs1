@@ -1779,6 +1779,19 @@
     box-shadow: 0 6px 30px rgba(0, 212, 255, 0.6);
   }
 
+  .chatbot-toggle-live {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: #00ff88;
+    border: 1px solid var(--black);
+    border-radius: 50%;
+    animation: pulseLive 2s infinite;
+    box-shadow: 0 0 6px rgba(0, 255, 136, 0.8);
+  }
+
   .chatbot-toggle.active {
     background: var(--gray-800);
     color: var(--accent);
@@ -1862,6 +1875,29 @@
     color: var(--accent);
     text-transform: uppercase;
     font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .chatbot-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+  }
+
+  .chatbot-live-badge .live-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulseLive 2s infinite;
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+    flex-shrink: 0;
   }
 
   .chatbot-close {
@@ -2284,9 +2320,8 @@
         2. Uncomment the img tag below and comment out the placeholder div
         3. Update the src path if your logo has a different name
       -->
-      <!-- <img src="logo.png" alt="PrimoraX Labs Logo" /> -->
-      <img src="logo.jpg" alt="PrimoraX Labs Logo" />
-
+      <img src="logo.png" alt="PrimoraX Labs Logo" />
+      <!-- <div class="splash-logo-placeholder">PX</div> -->
     </div>
     <h1 class="splash-title">PrimoraX Labs</h1>
     <p class="splash-subtitle">Engineering Lab & Archive</p>
@@ -2309,9 +2344,8 @@
         2. Uncomment the img tag below and comment out the placeholder span
         3. Update the src path if your logo has a different name
       -->
-      <!-- <img src="logo.png" alt="PrimoraX Labs" /> -->
-      <img src="logo.jpg" alt="PrimoraX Labs" />
-  
+      <img src="logo.png" alt="PrimoraX Labs" />
+      <!-- <span style="font-family: var(--mono); font-size: 18px; color: var(--accent); font-weight: bold;">PX</span> -->
     </div>
     <span class="nav-logo-text">PrimoraX<span>.</span>labs</span>
   </a>
@@ -2328,7 +2362,7 @@
 <section class="hero" id="hero">
   <div class="hero-bg"></div>
   <div class="hero-grid"></div>
-  <p class="hero-eyebrow" style="font-size: 24px; letter-spacing: 0.2em;">PrimoraX.labs — Engineering Lab &amp; Archive</p>
+  <p class="hero-eyebrow" style="font-size: 48px; letter-spacing: 0.2em;">PrimoraX.labs — Engineering Lab &amp; Archive</p>
   <h1 class="hero-title">
     Build.<br>
     <em>Document.</em><br>
@@ -2998,9 +3032,8 @@
           2. Uncomment the img tag below and comment out the placeholder span
           3. Update the src path if your logo has a different name
         -->
-        <!-- <img src="logo.png" alt="PrimoraX Labs" /> -->
-        <img src="logo.jpg" alt="PrimoraX Labs" />
-     
+        <img src="logo.png" alt="PrimoraX Labs" />
+        <!-- <span style="font-family: var(--mono); font-size: 24px; color: var(--accent); font-weight: bold;">PX</span> -->
       </div>
       <div class="footer-brand-text">PrimoraX<span>.</span>labs</div>
     </div>
@@ -3765,7 +3798,10 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="chatbot-container">
   <div class="chatbot-window">
     <div class="chatbot-header">
-      <h3>PrimoraX Assistant</h3>
+      <h3>
+        <span class="chatbot-live-badge"><span class="live-dot"></span>LIVE</span>
+        PrimoraX Assistant
+      </h3>
       <button class="chatbot-close" onclick="closeChatbot()">×</button>
     </div>
     <div class="chatbot-messages" id="chatbotMessages"></div>
@@ -3774,7 +3810,10 @@ document.addEventListener('DOMContentLoaded', () => {
       <button class="chatbot-send" onclick="handleChatbotInput()">SEND</button>
     </div>
   </div>
-  <button class="chatbot-toggle" onclick="toggleChatbot()" title="Open Chatbot" aria-label="Open Chatbot">💬</button>
+  <button class="chatbot-toggle" onclick="toggleChatbot()" title="Live Chat — Open Chatbot" aria-label="Open Live Chatbot">
+    <span class="chatbot-toggle-live" aria-hidden="true"></span>
+    💬
+  </button>
 </div>
 
 </body></html>
